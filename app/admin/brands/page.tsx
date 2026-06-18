@@ -10,6 +10,7 @@ interface Brand {
   id: string
   name: string
   logo_url: string | null
+  description?: string | null
   created_at: string
   product_count?: number
 }
@@ -43,9 +44,10 @@ function DeleteModal({ name, onConfirm, onCancel, loading }: {
 }
 
 function EditModal({ brand, onSave, onCancel }: {
-  brand: Brand; onSave: (id: string, name: string, file: File | null) => Promise<void>; onCancel: () => void
+  brand: Brand; onSave: (id: string, name: string, description: string, file: File | null) => Promise<void>; onCancel: () => void
 }) {
   const [editName, setEditName] = useState(brand.name)
+  const [editDescription, setEditDescription] = useState(brand.description || '')
   const [editFile, setEditFile] = useState<File | null>(null)
   const [editPreview, setEditPreview] = useState<string | null>(brand.logo_url)
   const [editDrag, setEditDrag] = useState(false)
@@ -61,7 +63,7 @@ function EditModal({ brand, onSave, onCancel }: {
     e.preventDefault()
     if (!editName.trim()) return
     setSaving(true)
-    await onSave(brand.id, editName.trim(), editFile)
+    await onSave(brand.id, editName.trim(), editDescription.trim(), editFile)
     setSaving(false)
   }
 
@@ -94,6 +96,15 @@ function EditModal({ brand, onSave, onCancel }: {
             <input
               type="text" value={editName} onChange={e => setEditName(e.target.value)} required autoFocus
               className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Description</label>
+            <textarea
+              value={editDescription} onChange={e => setEditDescription(e.target.value)} rows={2} placeholder="Optional brand description..."
+              className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
             />
           </div>
 
@@ -158,8 +169,10 @@ export default function BrandsPage() {
   const supabase = createClient()
   const router = useRouter()
   const [brands, setBrands] = useState<Brand[]>([])
+  const [initialLoading, setInitialLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -179,6 +192,7 @@ export default function BrandsPage() {
       if (p.brand_id) countMap[p.brand_id] = (countMap[p.brand_id] ?? 0) + 1
     }
     setBrands(data.map(b => ({ ...b, product_count: countMap[b.id] ?? 0 })))
+    setInitialLoading(false)
   }
 
   useEffect(() => { fetchBrands() }, [])
@@ -201,11 +215,11 @@ export default function BrandsPage() {
       if (uploadError) { toast.error(uploadError.message, { id: t }); setLoading(false); return }
       logo_url = supabase.storage.from('brand-logos').getPublicUrl(uploadData.path).data.publicUrl
     }
-    const { error } = await supabase.from('brands').insert({ name: name.trim(), logo_url })
+    const { error } = await supabase.from('brands').insert({ name: name.trim(), description: description.trim(), logo_url })
     if (error) { toast.error(error.message, { id: t }) }
     else {
       toast.success(`Brand "${name.trim()}" added!`, { id: t })
-      setName(''); setLogoFile(null); setPreview(null)
+      setName(''); setDescription(''); setLogoFile(null); setPreview(null)
       if (fileRef.current) fileRef.current.value = ''
       setFormOpen(false)
       await fetchBrands()
@@ -213,7 +227,7 @@ export default function BrandsPage() {
     setLoading(false)
   }
 
-  const handleEdit = async (id: string, newName: string, file: File | null) => {
+  const handleEdit = async (id: string, newName: string, newDesc: string, file: File | null) => {
     const t = toast.loading('Updating brand...')
     let logo_url: string | undefined = undefined
     if (file) {
@@ -223,7 +237,7 @@ export default function BrandsPage() {
       if (uploadError) { toast.error(uploadError.message, { id: t }); return }
       logo_url = supabase.storage.from('brand-logos').getPublicUrl(uploadData.path).data.publicUrl
     }
-    const update: Record<string, string> = { name: newName }
+    const update: Record<string, string> = { name: newName, description: newDesc }
     if (logo_url) update.logo_url = logo_url
     const { error } = await supabase.from('brands').update(update).eq('id', id)
     if (error) { toast.error(error.message, { id: t }) }
@@ -252,7 +266,10 @@ export default function BrandsPage() {
       <div className="mb-6 sm:mb-7 flex items-center justify-between gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">Brands</h1>
-          <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{brands.length} brand{brands.length !== 1 ? 's' : ''} registered</p>
+          {initialLoading
+            ? <div className="skeleton h-4 w-36 mt-1" />
+            : <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{brands.length} brand{brands.length !== 1 ? 's' : ''} registered</p>
+          }
         </div>
         <button
           onClick={() => setFormOpen(f => !f)}
@@ -281,6 +298,11 @@ export default function BrandsPage() {
             <div className="flex-1 min-w-[180px]">
               <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Brand Name *</label>
               <input type="text" value={name} onChange={e => setName(e.target.value)} required autoFocus placeholder="e.g. Jinko Solar"
+                className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+            </div>
+            <div className="flex-1 min-w-[220px]">
+              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Description (Optional)</label>
+              <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. A leading solar brand"
                 className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
             </div>
             <div>
@@ -342,7 +364,36 @@ export default function BrandsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {filtered.length === 0 ? (
+            {initialLoading ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <tr key={i}>
+                  {/* Logo */}
+                  <td className="px-6 py-3">
+                    <div className="skeleton w-24 h-14 rounded-xl" style={{ animationDelay: `${i * 0.06}s` }} />
+                  </td>
+                  {/* Name */}
+                  <td className="px-6 py-4">
+                    <div className="skeleton h-4" style={{ width: [120, 100, 140, 90, 130, 110][i], animationDelay: `${i * 0.06 + 0.05}s` }} />
+                  </td>
+                  {/* Products count */}
+                  <td className="px-6 py-4">
+                    <div className="skeleton h-6 w-24 rounded-full" style={{ animationDelay: `${i * 0.06 + 0.1}s` }} />
+                  </td>
+                  {/* Date */}
+                  <td className="px-6 py-4">
+                    <div className="skeleton h-3 w-20" style={{ animationDelay: `${i * 0.06 + 0.15}s` }} />
+                  </td>
+                  {/* Actions */}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 justify-end">
+                      <div className="skeleton h-7 w-20 rounded-lg" style={{ animationDelay: `${i * 0.06 + 0.2}s` }} />
+                      <div className="skeleton h-7 w-14 rounded-lg" style={{ animationDelay: `${i * 0.06 + 0.25}s` }} />
+                      <div className="skeleton h-7 w-16 rounded-lg" style={{ animationDelay: `${i * 0.06 + 0.3}s` }} />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
               <tr><td colSpan={5} className="px-6 py-16 text-center text-gray-400">
                 {search ? `No brands matching "${search}"` : 'No brands yet — add your first brand above.'}
               </td></tr>

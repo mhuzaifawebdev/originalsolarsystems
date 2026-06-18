@@ -3,6 +3,8 @@ import Link from 'next/link'
 import ProductActions from '@/components/admin/ProductActions'
 import ProductFilters from '@/components/admin/ProductFilters'
 
+export const dynamic = 'force-dynamic'
+
 const PER_PAGE_OPTIONS = [10, 20, 50, 100]
 
 interface Props {

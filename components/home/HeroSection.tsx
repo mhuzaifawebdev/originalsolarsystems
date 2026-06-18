@@ -59,39 +59,9 @@ export default function HeroSection() {
             className={`text-slate-400 text-base sm:text-lg max-w-[420px] leading-relaxed mb-7 sm:mb-9 ${m ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
             style={{ transition: 'opacity 0.8s ease 340ms, transform 0.8s ease 340ms' }}
           >
-            Counterfeit solar panels, inverters, and batteries are flooding the market. Verify your solar product in seconds — scan the QR code or enter the serial number to confirm it&apos;s genuine.
+            Counterfeit solar panels are flooding the market. Verify your solar panel in seconds — scan the QR code or enter the serial number to confirm it&apos;s genuine.
           </p>
 
-          {/* CTAs */}
-          <div
-            className={`flex flex-col sm:flex-row gap-3 justify-start mb-12 ${m ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-            style={{ transition: 'opacity 0.8s ease 480ms, transform 0.8s ease 480ms' }}
-          >
-            <Link
-              href="/verify"
-              className="animate-pulse-glow group inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-8 rounded-2xl text-sm transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <rect x="3" y="3" width="7" height="7" rx="1" strokeWidth="2" />
-                <rect x="14" y="3" width="7" height="7" rx="1" strokeWidth="2" />
-                <rect x="3" y="14" width="7" height="7" rx="1" strokeWidth="2" />
-                <rect x="14" y="14" width="3" height="3" rx="0.5" strokeWidth="2" />
-                <rect x="19" y="14" width="2" height="2" rx="0.5" strokeWidth="2" />
-                <rect x="19" y="19" width="2" height="2" rx="0.5" strokeWidth="2" />
-                <rect x="14" y="19" width="3" height="2" rx="0.5" strokeWidth="2" />
-              </svg>
-              Scan Panel QR Code
-            </Link>
-            <Link
-              href="/verify"
-              className="inline-flex items-center justify-center gap-2.5 border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white font-bold py-4 px-8 rounded-2xl text-sm transition-all duration-300 hover:bg-white/5 hover:scale-[1.04] active:scale-[0.98]"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
-              </svg>
-              Enter Serial Number
-            </Link>
-          </div>
 
           {/* Micro stats */}
           <div

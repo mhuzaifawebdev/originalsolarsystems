@@ -74,8 +74,9 @@ export default function ProductActions({ id, name }: Props) {
       await deleteProduct(id)
       toast.success(`"${name}" deleted`, { id: t })
       setShowModal(false)
-    } catch {
-      toast.error('Failed to delete product', { id: t })
+      router.refresh()
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete product', { id: t })
     } finally {
       setLoading(false)
     }

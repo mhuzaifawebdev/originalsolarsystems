@@ -247,18 +247,6 @@ export default async function VerifyTokenPage({ params }: { params: Promise<{ to
         <div className="max-w-2xl mx-auto px-6 py-14">
 
           {/* High scan warning */}
-          {highScanWarning && (
-            <div style={{
-              marginBottom: 24, padding: '14px 18px', borderRadius: 16,
-              background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)',
-              display: 'flex', gap: 12, alignItems: 'flex-start',
-            }}>
-              <span style={{ fontSize: 20 }}>⚠️</span>
-              <span style={{ fontSize: 13, color: '#92400e', lineHeight: 1.6 }}>
-                <strong>High Scan Count:</strong> This product has been scanned {scanCount} times. Ensure the packaging was sealed upon purchase.
-              </span>
-            </div>
-          )}
 
           {/* Quality badge */}
           <div style={{

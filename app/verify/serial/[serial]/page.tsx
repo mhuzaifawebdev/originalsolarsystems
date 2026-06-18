@@ -4,17 +4,29 @@ import { normalizeSerial } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
-export default async function VerifySerialPage({ params }: { params: Promise<{ serial: string }> }) {
+export default async function VerifySerialPage({ 
+  params,
+  searchParams
+}: { 
+  params: Promise<{ serial: string }>
+  searchParams: Promise<{ brand?: string }>
+}) {
   const { serial } = await params
+  const { brand } = await searchParams
   const supabase = await createClient()
 
   const cleaned = normalizeSerial(decodeURIComponent(serial))
 
-  const { data: product } = await supabase
+  let query = supabase
     .from('products')
-    .select('verification_token')
+    .select('verification_token, brands!inner(name)')
     .eq('serial_number', cleaned)
-    .single()
+
+  if (brand) {
+    query = query.ilike('brands.name', brand)
+  }
+
+  const { data: product } = await query.single()
 
   if (!product) {
     // Redirect to token page with a sentinel that shows not-found

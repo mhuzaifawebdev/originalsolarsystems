@@ -22,8 +22,8 @@ const steps: StepConfig[] = [
   {
     number: '01',
     title: 'Find the Label',
-    desc: 'Locate the QR code or serial number on your solar panel, inverter, or battery label.',
-    detail: 'On solar panels, the label is usually on the back frame. On inverters and batteries, check the side sticker. Every genuine product has a unique code.',
+    desc: 'Locate the QR code or serial number on your solar panel label.',
+    detail: 'On solar panels, the label is usually on the back frame. Every genuine product has a unique code.',
     bg: 'linear-gradient(145deg, #0c2461 0%, #1e40af 55%, #2563eb 100%)',
     shadowColor: 'rgba(37,99,235,0.55)',
     accentRgb: '147,197,253',
@@ -252,7 +252,7 @@ export default function HowItWorksSection() {
             </span>
           </h2>
           <p className="text-gray-500 mt-5 max-w-md mx-auto text-base leading-relaxed">
-            Know within seconds whether the solar panel, inverter, or battery you purchased is genuine. Hover each card to learn more.
+            Know within seconds whether the solar panel you purchased is genuine. Hover each card to learn more.
           </p>
         </AnimateOnScroll>
 
@@ -265,25 +265,7 @@ export default function HowItWorksSection() {
           ))}
         </div>
 
-        {/* CTA */}
-        <AnimateOnScroll delay={380} className="text-center">
-          <Link
-            href="/verify"
-            className="inline-flex items-center gap-3 text-white font-black py-4 px-10 rounded-2xl text-sm transition-all duration-300 hover:scale-[1.06] hover:shadow-2xl"
-            style={{
-              background: 'linear-gradient(135deg, #1e40af, #6d28d9)',
-              boxShadow: '0 8px 32px -4px rgba(109,40,217,0.45)',
-            }}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            Start Verification
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </AnimateOnScroll>
+
       </div>
     </section>
   )

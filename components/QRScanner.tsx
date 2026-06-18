@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+import { BrowserMultiFormatReader } from '@zxing/browser'
+
 interface QRScannerProps {
   onScan: (result: string) => void
 }
@@ -10,38 +12,41 @@ export default function QRScanner({ onScan }: QRScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [error, setError] = useState<string | null>(null)
   const [active, setActive] = useState(false)
+  const controlsRef = useRef<any>(null)
 
   useEffect(() => {
-    let scanner: import('qr-scanner').default | null = null
+    let mounted = true
+    const codeReader = new BrowserMultiFormatReader()
 
     const start = async () => {
       try {
-        const QrScanner = (await import('qr-scanner')).default
         if (!videoRef.current) return
 
-        scanner = new QrScanner(
+        controlsRef.current = await codeReader.decodeFromConstraints(
+          { video: { facingMode: 'environment' } },
           videoRef.current,
-          (result) => {
-            onScan(result.data)
-          },
-          {
-            preferredCamera: 'environment',
-            highlightScanRegion: true,
-            highlightCodeOutline: true,
+          (result, err) => {
+            if (result && mounted) {
+              onScan(result.getText())
+            }
           }
         )
-        await scanner.start()
-        setActive(true)
+        if (mounted) setActive(true)
       } catch (err) {
-        setError('Camera access denied or not available.')
-        console.error(err)
+        if (mounted) {
+          setError('Camera access denied or not available.')
+          console.error(err)
+        }
       }
     }
 
     start()
 
     return () => {
-      scanner?.destroy()
+      mounted = false
+      if (controlsRef.current) {
+        controlsRef.current.stop()
+      }
     }
   }, [onScan])
 
@@ -55,13 +60,16 @@ export default function QRScanner({ onScan }: QRScannerProps) {
         <>
           <video
             ref={videoRef}
-            className="w-full rounded-xl border border-gray-200 shadow"
+            className="w-full rounded-xl border border-gray-200 shadow object-cover"
             style={{ minHeight: 280, background: '#000' }}
           />
           {!active && (
             <div className="absolute inset-0 flex items-center justify-center text-white text-sm">
               Starting camera...
             </div>
+          )}
+          {active && (
+            <div className="absolute inset-0 border-4 border-indigo-500/50 rounded-xl pointer-events-none" />
           )}
         </>
       )}

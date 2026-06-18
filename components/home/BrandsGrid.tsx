@@ -9,6 +9,30 @@ interface Brand {
   id: string
   name: string
   logo_url: string | null
+  description?: string | null
+}
+
+const BRAND_DESCRIPTIONS: Record<string, string> = {
+  jinko:    'Trusted Jinko Solar panel authentication platform',
+  canadian: 'Canadian Solar genuine product registry',
+  longi:    'LONGi certified panel verification network',
+  'ja solar': 'JA Solar authorized authenticity check system',
+  jasolar:  'JA Solar authorized authenticity check system',
+  renesola: 'ReneSola quality-assured panel validation hub',
+  risen:    'Risen Energy genuine product certification center',
+  trina:    'Trina Solar official panel authentication gateway',
+  seraphim: 'Seraphim Solar verified product traceability system',
+  suntech:  'Suntech Power certified authenticity assurance portal',
+  yingli:   'Yingli Solar official panel legitimacy checker',
+}
+
+function getBrandDescription(brand: Brand): string {
+  if (brand.description) return brand.description
+  const key = brand.name.toLowerCase().trim()
+  for (const [pattern, desc] of Object.entries(BRAND_DESCRIPTIONS)) {
+    if (key.includes(pattern)) return desc
+  }
+  return `${brand.name} certified solar panel verification system`
 }
 
 function BrandCard({ brand, index }: { brand: Brand; index: number }) {
@@ -117,7 +141,7 @@ function BrandCard({ brand, index }: { brand: Brand; index: number }) {
               : 'linear-gradient(135deg,#4f46e5,#7c3aed)',
             transition: 'background 0.4s ease',
           }}>
-            <div style={{ minWidth: 0 }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
               <p style={{
                 fontSize: 18, fontWeight: 900,
                 color: '#ffffff',
@@ -126,9 +150,19 @@ function BrandCard({ brand, index }: { brand: Brand; index: number }) {
               }}>
                 {brand.name}
               </p>
+              {brand.description && (
+                <p style={{
+                  fontSize: 13, marginTop: 4,
+                  color: 'rgba(255,255,255,0.85)',
+                  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis',
+                  lineHeight: 1.3
+                }}>
+                  {brand.description}
+                </p>
+              )}
               <p style={{
-                fontSize: 12, fontWeight: 600, marginTop: 3,
-                color: 'rgba(255,255,255,0.65)',
+                fontSize: 11, fontWeight: 700, marginTop: brand.description ? 6 : 3,
+                color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em'
               }}>
                 Verify authenticity →
               </p>

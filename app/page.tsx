@@ -9,7 +9,7 @@ export const revalidate = 60
 
 export default async function HomePage() {
   const supabase = await createClient()
-  const { data: brands } = await supabase.from('brands').select('id, name, logo_url').order('name')
+  const { data: brands } = await supabase.from('brands').select('id, name, logo_url, description').order('name')
 
   return (
     <div className="min-h-screen" style={{ background: '#f8faff' }}>
@@ -35,7 +35,7 @@ export default async function HomePage() {
               Brands
             </Link>
             <Link
-              href="/verify"
+              href="#brands"
               className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm py-2 px-3 sm:px-5 rounded-xl transition-all duration-200 hover:scale-105 whitespace-nowrap"
             >
               Verify Product
@@ -78,7 +78,7 @@ export default async function HomePage() {
               </span>
             </h2>
             <p className="text-gray-500 text-lg max-w-lg mx-auto leading-relaxed">
-              Select the solar brand on your panel, inverter, or battery to instantly check its authenticity.
+              Select the solar brand on your solar panel to instantly check its authenticity.
             </p>
           </div>
 

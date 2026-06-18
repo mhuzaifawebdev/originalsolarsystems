@@ -13,6 +13,7 @@ function generateCode() {
   return Math.floor(1000 + Math.random() * 9000).toString()
 }
 
+
 function VerifyPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -47,7 +48,9 @@ function VerifyPageInner() {
       return
     }
 
-    router.push(`/verify/serial/${encodeURIComponent(cleaned)}`)
+    const brand = searchParams.get('brand')
+    const qs = brand ? `?brand=${encodeURIComponent(brand)}` : ''
+    router.push(`/verify/serial/${encodeURIComponent(cleaned)}${qs}`)
   }
 
   const handleScan = useCallback((data: string) => {
@@ -136,7 +139,7 @@ function VerifyPageInner() {
               }}>Solar Product</span>
             </h1>
             <p style={{ color: '#6b7280', fontSize: 15, maxWidth: 380, margin: '0 auto', lineHeight: 1.6 }}>
-              Enter the serial number or scan the QR code on your panel, inverter, or battery to confirm authenticity.
+              Enter the serial number or scan the QR code on your solar panel to confirm authenticity.
             </p>
           </div>
 
