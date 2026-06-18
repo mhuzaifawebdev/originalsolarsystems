@@ -124,21 +124,22 @@ export default async function AdminDashboard() {
   ]
 
   return (
-    <div className="p-7 min-h-screen" style={{ background: 'linear-gradient(135deg,#f0f4ff 0%,#f8f9fe 50%,#f0fdf4 100%)' }}>
+    <div className="p-4 sm:p-7 min-h-screen" style={{ background: 'linear-gradient(135deg,#f0f4ff 0%,#f8f9fe 50%,#f0fdf4 100%)' }}>
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-6 sm:mb-8 flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Dashboard</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Welcome back — here&apos;s what&apos;s happening today.</p>
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">Dashboard</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-0.5">Welcome back — here&apos;s what&apos;s happening today.</p>
         </div>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-2.5 px-5 rounded-xl transition-all hover:scale-[1.03] shadow-lg shadow-blue-500/30"
+          className="shrink-0 inline-flex items-center gap-1.5 sm:gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm py-2 sm:py-2.5 px-3 sm:px-5 rounded-xl transition-all hover:scale-[1.03] shadow-lg shadow-blue-500/30"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Add Product
+          <span className="hidden sm:inline">Add Product</span>
+          <span className="sm:hidden">Add</span>
         </Link>
       </div>
 
@@ -160,7 +161,7 @@ export default async function AdminDashboard() {
               </div>
             </div>
             <div className="relative z-10">
-              <p className="text-4xl font-black text-white tabular-nums leading-none">{card.value.toLocaleString()}</p>
+              <p className="text-2xl sm:text-4xl font-black text-white tabular-nums leading-none">{card.value.toLocaleString()}</p>
               <p className="text-xs text-white/60 mt-1 font-medium">{card.sub}</p>
             </div>
             {card.link && (

@@ -39,7 +39,7 @@ const navItems = [
   },
   {
     href: '/admin/products/new',
-    label: 'Add Product',
+    label: 'Add',
     exact: true,
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,9 +69,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen flex" style={{ background: '#f1f5f9' }}>
-      {/* ── Sidebar ── */}
+
+      {/* ── Sidebar (desktop only) ── */}
       <aside
-        className="flex flex-col fixed inset-y-0 left-0 z-30 border-r border-white/10 transition-all duration-300"
+        className="hidden md:flex flex-col fixed inset-y-0 left-0 z-30 border-r border-white/10 transition-all duration-300"
         style={{ background: '#0d1424', width: sidebarW }}
       >
         {/* Logo */}
@@ -91,7 +92,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         </div>
 
-        {/* Floating toggle tab on right edge */}
+        {/* Toggle button */}
         <button
           onClick={() => setCollapsed(c => !c)}
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -162,11 +163,55 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* ── Main ── */}
       <main
-        className="flex-1 min-h-screen transition-all duration-300"
-        style={{ marginLeft: sidebarW }}
+        className="flex-1 min-h-screen transition-all duration-300 pb-20 md:pb-0 min-w-0"
+        style={{ marginLeft: 0 }}
       >
-        {children}
+        {/* Desktop: offset for sidebar */}
+        <div className="hidden md:block h-full" style={{ marginLeft: sidebarW }}>
+          {children}
+        </div>
+        {/* Mobile: full width */}
+        <div className="md:hidden w-full h-full">
+          {children}
+        </div>
       </main>
+
+      {/* ── Bottom Nav (mobile only) ── */}
+      <nav
+        className="md:hidden fixed bottom-0 inset-x-0 z-40 flex items-center justify-around px-2 py-2 border-t border-white/10"
+        style={{ background: '#0d1424' }}
+      >
+        {navItems.map(item => {
+          const active = isActive(item)
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
+                active ? 'text-white' : 'text-white/40'
+              }`}
+            >
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${
+                active ? 'bg-blue-600 shadow-lg shadow-blue-900/50' : ''
+              }`}>
+                {item.icon}
+              </div>
+              <span className="text-[10px] font-semibold">{item.label}</span>
+            </Link>
+          )
+        })}
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-white/40"
+        >
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </div>
+          <span className="text-[10px] font-semibold">Logout</span>
+        </button>
+      </nav>
 
       <HotToaster />
     </div>

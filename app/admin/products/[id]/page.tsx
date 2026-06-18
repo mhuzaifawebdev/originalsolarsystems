@@ -36,7 +36,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   ]
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <div className="flex items-center gap-3 mb-6">
         <Link
           href="/admin/products"
@@ -72,7 +72,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Codes */}
-        <ProductCodesClient serialNumber={product.serial_number} verifyUrl={verifyUrl} />
+        <ProductCodesClient serialNumber={product.serial_number} verifyUrl={verifyUrl} productName={product.product_name} />
       </div>
     </div>
   )

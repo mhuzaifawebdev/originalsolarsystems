@@ -247,19 +247,19 @@ export default function BrandsPage() {
   const filtered = brands.filter(b => b.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
-    <div className="p-7 min-h-screen" style={{ background: 'linear-gradient(135deg,#f0f4ff 0%,#f8f9fe 50%,#f0fdf4 100%)' }}>
+    <div className="p-4 sm:p-7 min-h-screen" style={{ background: 'linear-gradient(135deg,#f0f4ff 0%,#f8f9fe 50%,#f0fdf4 100%)' }}>
       {/* Header */}
-      <div className="mb-7 flex items-center justify-between">
+      <div className="mb-6 sm:mb-7 flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Brands</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{brands.length} brand{brands.length !== 1 ? 's' : ''} registered</p>
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">Brands</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{brands.length} brand{brands.length !== 1 ? 's' : ''} registered</p>
         </div>
         <button
           onClick={() => setFormOpen(f => !f)}
-          className="inline-flex items-center gap-2 text-sm font-bold text-white px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.03]"
+          className="shrink-0 inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.03]"
           style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)' }}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           Add Brand
@@ -330,7 +330,8 @@ export default function BrandsPage() {
 
       {/* Table */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[520px]">
           <thead>
             <tr style={{ background: 'linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%)' }}>
               <th className="text-left px-6 py-4 text-xs font-bold text-white/90 uppercase tracking-widest">Logo</th>
@@ -397,6 +398,7 @@ export default function BrandsPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {deleteTarget && (
