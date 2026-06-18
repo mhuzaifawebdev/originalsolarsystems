@@ -1,65 +1,110 @@
-import Image from "next/image";
+import { createClient } from '@/lib/supabase/server'
+import HeroSection from '@/components/home/HeroSection'
+import HowItWorksSection from '@/components/home/HowItWorksSection'
+import FeaturesSection from '@/components/home/FeaturesSection'
+import BrandsGrid from '@/components/home/BrandsGrid'
+import Link from 'next/link'
 
-export default function Home() {
+export const revalidate = 60
+
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: brands } = await supabase.from('brands').select('id, name, logo_url').order('name')
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="min-h-screen" style={{ background: '#f8faff' }}>
+      {/* ── Sticky Nav ── */}
+      <nav
+        className="fixed top-0 inset-x-0 z-50 border-b border-gray-100"
+        style={{ background: 'rgba(248,250,255,0.92)', backdropFilter: 'blur(16px)' }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-7 h-7 shrink-0 rounded-lg bg-blue-600 flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span className="font-black text-gray-900 tracking-tight text-sm sm:text-base">OriginalSolarSystems</span>
+          </div>
+          <div className="flex items-center gap-4 shrink-0">
+            <Link href="#how-it-works" className="text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors hidden md:block">
+              How It Works
+            </Link>
+            <Link href="#brands" className="text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors hidden md:block">
+              Brands
+            </Link>
+            <Link
+              href="/verify"
+              className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm py-2 px-3 sm:px-5 rounded-xl transition-all duration-200 hover:scale-105 whitespace-nowrap"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Verify Product
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Hero ── */}
+      <HeroSection />
+
+      {/* ── How It Works ── */}
+      <div id="how-it-works">
+        <HowItWorksSection />
+      </div>
+
+      {/* ── Features ── */}
+      <FeaturesSection />
+
+      {/* ── Brand Showcase ── */}
+      <section id="brands" className="relative overflow-hidden" style={{ background: '#f0f4ff' }}>
+        {/* Background ambient orbs */}
+        <div style={{ position: 'absolute', top: '10%', left: '5%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '10%', right: '5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)', filter: 'blur(50px)', pointerEvents: 'none' }} />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-28">
+          {/* Section header */}
+          <div className="text-center mb-20">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6"
+              style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1', border: '1px solid rgba(99,102,241,0.2)' }}
             >
-              Learning
-            </a>{" "}
-            center.
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse inline-block" />
+              Official Brands
+            </div>
+            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-none mb-6">
+              <span className="text-gray-900">VERIFY BY </span>
+              <span style={{ backgroundImage: 'linear-gradient(120deg,#6366f1 0%,#8b5cf6 50%,#3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                BRAND
+              </span>
+            </h2>
+            <p className="text-gray-500 text-lg max-w-lg mx-auto leading-relaxed">
+              Select the solar brand on your panel, inverter, or battery to instantly check its authenticity.
+            </p>
+          </div>
+
+          <BrandsGrid brands={brands ?? []} />
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer style={{ background: '#030C1A' }} className="border-t border-white/6 py-10 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center">
+              <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span className="text-white/50 text-sm font-medium">OriginalSolarSystems</span>
+          </div>
+          <p className="text-white/25 text-xs">
+            © {new Date().getFullYear()} OriginalSolarSystems. All rights reserved.
           </p>
+          <Link href="/admin" className="text-white/25 hover:text-white/50 text-xs transition-colors">
+            Admin →
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
-  );
+  )
 }
