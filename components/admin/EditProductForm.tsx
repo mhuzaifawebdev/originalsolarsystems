@@ -12,6 +12,7 @@ interface Product {
   serial_number: string
   wattage: string
   result: string
+  grade: string
   sales_destination: string
   importer_name: string
   level: string
@@ -31,6 +32,7 @@ export default function EditProductForm({ product, brands }: Props) {
     serial_number: product.serial_number ?? '',
     wattage: product.wattage ?? '',
     result: product.result ?? 'PASS',
+    grade: product.grade ?? '',
     sales_destination: product.sales_destination ?? '',
     importer_name: product.importer_name ?? '',
     level: product.level ?? '',
@@ -84,6 +86,15 @@ export default function EditProductForm({ product, brands }: Props) {
           <select className={field} value={form.result} onChange={set('result')}>
             <option value="PASS">PASS</option>
             <option value="FAIL">FAIL</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Grade</label>
+          <select className={field} value={form.grade} onChange={set('grade')}>
+            <option value="">Select grade...</option>
+            <option value="A Grade">A Grade</option>
+            <option value="B Grade">B Grade</option>
+            <option value="C Grade">C Grade</option>
           </select>
         </div>
         <div>

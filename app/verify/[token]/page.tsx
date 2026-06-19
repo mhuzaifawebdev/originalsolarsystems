@@ -124,6 +124,7 @@ export default async function VerifyTokenPage({ params }: { params: Promise<{ to
     { label: 'Importer', value: product.importer_name },
     { label: 'Level', value: product.level },
     { label: 'Wattage', value: product.wattage },
+    { label: 'Quality Grade', value: product.grade ?? '—' },
   ]
 
   return (

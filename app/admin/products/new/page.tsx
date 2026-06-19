@@ -23,6 +23,7 @@ export default function NewProductPage() {
     level: '',
     wattage: '',
     result: 'PASS',
+    grade: '',
   })
 
   useEffect(() => {
@@ -129,6 +130,22 @@ export default function NewProductPage() {
           >
             <option value="PASS">PASS</option>
             <option value="FAIL">FAIL</option>
+          </select>
+        </div>
+
+        {/* Grade */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Grade *</label>
+          <select
+            value={form.grade}
+            onChange={e => set('grade', e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select grade...</option>
+            <option value="A Grade">A Grade</option>
+            <option value="B Grade">B Grade</option>
+            <option value="C Grade">C Grade</option>
           </select>
         </div>
 

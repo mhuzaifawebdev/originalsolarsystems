@@ -20,6 +20,7 @@ export async function updateProduct(id: string, data: {
   serial_number: string
   wattage: string
   result: string
+  grade: string
   sales_destination: string
   importer_name: string
   level: string

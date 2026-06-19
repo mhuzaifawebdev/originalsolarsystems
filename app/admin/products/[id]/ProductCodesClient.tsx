@@ -169,8 +169,10 @@ function CodeCard({ id, label, children, filename, printTitle, productName }: {
           </button>
         </div>
       </div>
-      <div id={id} className="bg-white flex items-center justify-center p-3">
-        {children}
+      <div id={id} className="bg-white w-full overflow-x-auto flex items-center justify-center p-3">
+        <div className="max-w-full">
+          {children}
+        </div>
       </div>
     </div>
   )

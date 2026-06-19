@@ -10,14 +10,16 @@ interface BarcodeDisplayProps {
 
 export default function BarcodeDisplay({ value, width = 2, height = 80 }: BarcodeDisplayProps) {
   return (
-    <Barcode
-      value={value}
-      format="CODE128"
-      width={width}
-      height={height}
-      displayValue={true}
-      fontSize={14}
-      margin={10}
-    />
+    <div style={{ maxWidth: '100%', overflowX: 'auto' }}>
+      <Barcode
+        value={value}
+        format="CODE128"
+        width={width}
+        height={height}
+        displayValue={true}
+        fontSize={14}
+        margin={10}
+      />
+    </div>
   )
 }
