@@ -8,11 +8,11 @@ export const dynamic = 'force-dynamic'
 const PER_PAGE_OPTIONS = [10, 20, 50, 100]
 
 interface Props {
-  searchParams: Promise<{ page?: string; per?: string; brand?: string; result?: string }>
+  searchParams: Promise<{ page?: string; per?: string; brand?: string; pallet?: string }>
 }
 
 export default async function ProductsPage({ searchParams }: Props) {
-  const { page: pageStr, per: perStr, brand: brandFilter, result: resultFilter } = await searchParams
+  const { page: pageStr, per: perStr, brand: brandFilter, pallet: palletFilter } = await searchParams
   const perPage = PER_PAGE_OPTIONS.includes(Number(perStr)) ? Number(perStr) : 20
   const page = Math.max(1, Number(pageStr) || 1)
   const from = (page - 1) * perPage
@@ -28,7 +28,7 @@ export default async function ProductsPage({ searchParams }: Props) {
     .order('created_at', { ascending: false })
 
   if (brandFilter) query = query.eq('brand_id', brandFilter)
-  if (resultFilter) query = query.eq('result', resultFilter)
+  if (palletFilter) query = query.eq('pallet_id', palletFilter)
 
   const { data: products, count } = await query.range(from, to)
 
@@ -40,7 +40,7 @@ export default async function ProductsPage({ searchParams }: Props) {
     params.set('page', String(p))
     params.set('per', String(perPage))
     if (brandFilter) params.set('brand', brandFilter)
-    if (resultFilter) params.set('result', resultFilter)
+    if (palletFilter) params.set('pallet', palletFilter)
     Object.entries(overrides).forEach(([k, v]) => {
       if (v) params.set(k, v); else params.delete(k)
     })
@@ -99,7 +99,7 @@ export default async function ProductsPage({ searchParams }: Props) {
               )) : (
                 <tr>
                   <td colSpan={7} className="px-6 py-16 text-center text-gray-400">
-                    No products found{brandFilter || resultFilter ? ' for the selected filters' : ''}.
+                    No products found{brandFilter || palletFilter ? ' for the selected filters' : ''}.
                   </td>
                 </tr>
               )}

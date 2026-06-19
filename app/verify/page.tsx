@@ -54,19 +54,26 @@ function VerifyPageInner() {
   }
 
   const handleScan = useCallback((data: string) => {
+    const trimmed = data.trim()
+
+    // QR codes encode the full verify URL — extract the token
     try {
-      const url = new URL(data)
-      const pathParts = url.pathname.split('/')
-      const tokenIndex = pathParts.indexOf('verify') + 1
-      const token = pathParts[tokenIndex]
-      if (token) {
-        router.push(`/verify/${token}`)
-      } else {
-        setError('QR code is not a valid product verification code.')
+      const url = new URL(trimmed)
+      if (url.pathname.includes('/verify/')) {
+        const parts = url.pathname.split('/')
+        const idx = parts.indexOf('verify')
+        const token = parts[idx + 1]
+        if (token) { router.push(`/verify/${token}`); return }
       }
     } catch {
-      setError('Could not read QR code. Please try again or enter the serial number manually.')
+      // not a URL — fall through to barcode handling
     }
+
+    // Barcodes encode the raw serial number
+    const cleaned = normalizeSerial(trimmed)
+    if (cleaned) { router.push(`/verify/serial/${encodeURIComponent(cleaned)}`); return }
+
+    setError('Could not read code. Try again or enter the serial number manually.')
   }, [router])
 
   return (
@@ -168,7 +175,7 @@ function VerifyPageInner() {
                     boxShadow: tab === t ? '0 4px 14px rgba(59,130,246,0.35)' : 'none',
                   }}
                 >
-                  {t === 'serial' ? '# Enter Serial' : '⬛ Scan QR Code'}
+                  {t === 'serial' ? '# Enter Serial' : '⬛ Scan Code'}
                 </button>
               ))}
             </div>
@@ -289,7 +296,7 @@ function VerifyPageInner() {
             ) : (
               <div className="space-y-4">
                 <p style={{ textAlign: 'center', fontSize: 13, color: '#6b7280' }}>
-                  Point your camera at the QR code printed on the product
+                  Point your camera at the QR code or barcode on the product
                 </p>
                 <QRScanner onScan={handleScan} />
               </div>

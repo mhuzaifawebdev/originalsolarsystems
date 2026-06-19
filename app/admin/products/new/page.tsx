@@ -6,17 +6,20 @@ import { createClient } from '@/lib/supabase/client'
 import { normalizeSerial } from '@/lib/utils'
 
 interface Brand { id: string; name: string }
+interface Pallet { id: string; name: string }
 
 export default function NewProductPage() {
   const router = useRouter()
   const supabase = createClient()
   const [brands, setBrands] = useState<Brand[]>([])
+  const [pallets, setPallets] = useState<Pallet[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [form, setForm] = useState({
     serial_number: '',
     brand_id: '',
+    pallet_id: '',
     product_name: '',
     sales_destination: '',
     importer_name: '',
@@ -32,6 +35,18 @@ export default function NewProductPage() {
     })
   }, [])
 
+  useEffect(() => {
+    if (!form.brand_id) { setPallets([]); set('pallet_id', ''); return }
+    supabase
+      .from('pallets')
+      .select('id, name')
+      .eq('brand_id', form.brand_id)
+      .order('name')
+      .then(({ data }) => {
+        if (data) setPallets(data)
+      })
+  }, [form.brand_id])
+
   const set = (key: string, value: string) => setForm(f => ({ ...f, [key]: value }))
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,6 +61,7 @@ export default function NewProductPage() {
       .insert({
         ...form,
         serial_number: normalizeSerial(form.serial_number),
+        pallet_id: form.pallet_id || null,
         created_by: user?.id,
       })
       .select('id')
@@ -103,6 +119,29 @@ export default function NewProductPage() {
             <option value="">Select brand...</option>
             {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
           </select>
+        </div>
+
+        {/* Pallet */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Pallet
+            <span className="ml-1.5 text-xs text-gray-400 font-normal">(optional)</span>
+          </label>
+          <select
+            value={form.pallet_id}
+            onChange={e => set('pallet_id', e.target.value)}
+            disabled={!form.brand_id}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <option value="">{form.brand_id ? 'No pallet (assign later)' : 'Select a brand first…'}</option>
+            {pallets.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+          </select>
+          {form.brand_id && pallets.length === 0 && (
+            <p className="mt-1.5 text-xs text-amber-600">
+              No pallets for this brand yet.{' '}
+              <a href="/admin/pallets" className="underline font-semibold">Create one →</a>
+            </p>
+          )}
         </div>
 
         {/* Dynamic fields */}
