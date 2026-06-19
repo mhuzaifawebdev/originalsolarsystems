@@ -276,35 +276,39 @@ export default async function VerifyTokenPage({ params }: { params: Promise<{ to
             boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
             overflow: 'hidden',
           }}>
-            {details.map((d, i) => (
-              <div
-                key={d.label}
-                style={{
-                  display: 'flex',
-                  flexDirection: d.mono ? 'column' : 'row',
-                  justifyContent: 'space-between',
-                  alignItems: d.mono ? 'flex-start' : 'center',
-                  gap: d.mono ? 4 : 0,
-                  padding: '14px 24px',
-                  borderBottom: i < details.length - 1 ? '1px solid #f1f5f9' : 'none',
-                }}
-              >
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8', flexShrink: 0, width: d.mono ? 'auto' : 130 }}>
-                  {d.label}
-                </span>
-                <span style={{
-                  fontSize: d.mono ? 13 : 14,
-                  fontWeight: 700,
-                  color: '#0f172a',
-                  textAlign: d.mono ? 'left' : 'right',
-                  fontFamily: d.mono ? 'monospace' : 'inherit',
-                  letterSpacing: d.mono ? '0.05em' : 'normal',
-                  wordBreak: 'break-all',
-                }}>
-                  {d.value}
-                </span>
-              </div>
-            ))}
+            {details.map((d, i) => {
+              // center serial when it fits on one line (~22 chars), left-align when it would wrap
+              const centered = d.mono && (d.value?.toString().length ?? 0) <= 22
+              return (
+                <div
+                  key={d.label}
+                  style={{
+                    display: 'flex',
+                    flexDirection: d.mono ? 'column' : 'row',
+                    justifyContent: 'space-between',
+                    alignItems: d.mono ? (centered ? 'center' : 'flex-start') : 'center',
+                    gap: d.mono ? 4 : 0,
+                    padding: '14px 24px',
+                    borderBottom: i < details.length - 1 ? '1px solid #f1f5f9' : 'none',
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8', flexShrink: 0, width: d.mono ? 'auto' : 130, textAlign: centered ? 'center' : 'left' }}>
+                    {d.label}
+                  </span>
+                  <span style={{
+                    fontSize: d.mono ? 13 : 14,
+                    fontWeight: 700,
+                    color: '#0f172a',
+                    textAlign: d.mono ? (centered ? 'center' : 'left') : 'right',
+                    fontFamily: d.mono ? 'monospace' : 'inherit',
+                    letterSpacing: d.mono ? '0.05em' : 'normal',
+                    wordBreak: 'break-all',
+                  }}>
+                    {d.value}
+                  </span>
+                </div>
+              )
+            })}
           </div>
 
           {/* Brand crafted message */}
