@@ -20,7 +20,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     .select('*', { count: 'exact', head: true })
     .eq('product_id', id)
 
-  const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://originalsolars.com'}/verify/${product.verification_token}`
+  const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.originalsolars.com'}/verify/${product.verification_token}`
 
   const details = [
     { label: 'Serial Number', value: product.serial_number, mono: true },
