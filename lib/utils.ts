@@ -3,6 +3,6 @@ export function normalizeSerial(serial: string): string {
 }
 
 export function getVerifyUrl(token: string): string {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://originalsolars.com'
   return `${base}/verify/${token}`
 }

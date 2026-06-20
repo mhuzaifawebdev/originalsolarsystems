@@ -105,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             {!collapsed && (
               <div className="min-w-0">
-                <div className="text-white font-black text-sm tracking-tight leading-none truncate">OriginalSolarSystems</div>
+                <div className="text-white font-black text-sm tracking-tight leading-none truncate">OriginalSolars</div>
                 <div className="text-white/30 text-[10px] mt-0.5">Admin Panel</div>
               </div>
             )}

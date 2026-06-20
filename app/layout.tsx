@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OriginalSolarSystems — Product Authenticity Verification",
+  title: "OriginalSolars — Product Authenticity Verification",
   description: "Verify your solar product is 100% genuine using our barcode or QR code scanner.",
   icons: {
     icon: [

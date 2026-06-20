@@ -5,7 +5,7 @@ export default function SerialNotFound() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col">
       <header className="border-b border-gray-100 bg-white/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4">
-          <Link href="/" className="font-bold text-lg text-slate-900">OriginalSolarSystems</Link>
+          <Link href="/" className="font-bold text-lg text-slate-900">OriginalSolars</Link>
         </div>
       </header>
       <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">

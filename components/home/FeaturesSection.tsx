@@ -70,7 +70,7 @@ export default function FeaturesSection() {
             {/* Section label */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-5" style={{ background: 'rgba(99,102,241,0.08)', color: '#6366f1', border: '1px solid rgba(99,102,241,0.18)' }}>
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse inline-block" />
-              Why OriginalSolarSystems
+              Why OriginalSolars
             </div>
 
             <h2 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4">

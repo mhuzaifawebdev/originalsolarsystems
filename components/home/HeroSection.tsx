@@ -126,7 +126,7 @@ function PhoneMockup() {
 
           {/* App header */}
           <div className="px-5 pt-3 pb-3 border-b border-white/5">
-            <div className="text-white/35 text-[10px] uppercase tracking-[0.18em] mb-0.5">OriginalSolarSystems</div>
+            <div className="text-white/35 text-[10px] uppercase tracking-[0.18em] mb-0.5">OriginalSolars</div>
             <div className="text-white font-bold text-[15px]">Verify Solar Product</div>
           </div>
 

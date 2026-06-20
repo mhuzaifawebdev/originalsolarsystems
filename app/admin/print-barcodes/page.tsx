@@ -8,7 +8,7 @@ const BarcodeDisplay = dynamic(() => import('@/components/BarcodeDisplay'), { ss
 const QRCode = dynamic(() => import('react-qr-code').then(m => m.default ?? m), { ssr: false })
 
 const PRINT_LIMIT = 60
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://originalsolars.com'
 
 interface Brand { id: string; name: string }
 interface Pallet { id: string; name: string }

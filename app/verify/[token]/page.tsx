@@ -35,7 +35,7 @@ export default async function VerifyTokenPage({ params }: { params: Promise<{ to
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <span className="font-black text-white text-base tracking-tight">OriginalSolarSystems</span>
+          <span className="font-black text-white text-base tracking-tight">OriginalSolars</span>
         </Link>
         <Link
           href="/verify"
@@ -59,10 +59,9 @@ export default async function VerifyTokenPage({ params }: { params: Promise<{ to
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <span className="text-white/50 text-sm font-medium">OriginalSolarSystems</span>
+          <span className="text-white/50 text-sm font-medium">OriginalSolars</span>
         </div>
-        <p className="text-white/25 text-xs">© {new Date().getFullYear()} OriginalSolarSystems. All rights reserved.</p>
-        <Link href="/admin" className="text-white/25 hover:text-white/50 text-xs transition-colors">Admin →</Link>
+        <p className="text-white/25 text-xs">© {new Date().getFullYear()} OriginalSolars. All rights reserved.</p>
       </div>
     </footer>
   )
@@ -238,7 +237,7 @@ export default async function VerifyTokenPage({ params }: { params: Promise<{ to
             </span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 16, maxWidth: 420, lineHeight: 1.6 }}>
-            Verified against the OriginalSolarSystems registry. This product is genuine and registered by an authorised importer.
+            Verified against the OriginalSolars registry. This product is genuine and registered by an authorised importer.
           </p>
         </div>
       </div>
